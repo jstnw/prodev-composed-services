@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  mongodb:
+    image: 'mongo:4-bionic'
+    volumes:
+      - /data/db:./auth/data
+  auth:
+    build: './auth'
+    environment:
+      JWT_Secret: 'eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTYxMjQ2NTA2NSwiaWF0IjoxNjEyNDY1MDY1fQ.TWNDhe-0HVWVTvqCqUBbmb6cFHJ0scy1Bu4MQa8S2u4'
+      MONGODB_URL: 'mongodb://mongodb/prodev-composed-auth'
+  app:
+    build: './app'
+    volumes:
+      - .:./app/data:/usr/src/app/data
+      - .:./app/src:/usr/src/app/src
+  ghi:
+    build: './ghi'
+    ports:
+      - '80:8910'
+    volumes:
+      - /usr/share/nginx/html:./ghi/static
